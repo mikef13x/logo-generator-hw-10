@@ -1,12 +1,8 @@
 const fs = require('fs')
-const {circle, triangle, square} = require('./lib/shapes')
+const {Circle, Triangle, Square} = require('./lib/shapes')
 const inquirer = require('inquirer')
 
-const generateLogo = ({logoText, textColor, logoShape, shapeColor}) =>
-`${logoText}
-${textColor}
-${logoShape}
-${shapeColor}`
+
 
 inquirer
     .prompt([
@@ -41,10 +37,26 @@ inquirer
             name: 'shapeColor'
         }
     ]).then((answers) => {
-        generateLogos = generateLogo(answers)
-        fs.writeFile('./examples/logo.svg', generateLogos, err => {
-            err ? console.log(err, "error") : console.log("generated logo")
-        })
+        if(answers.logoShape === 'triangle') {
+            const triangle = new Triangle(answers.logoText, answers.textColor, answers.shapeColor) 
+            fs.writeFile('./examples/triangle.svg', triangle.render(), err => {
+                err ? console.log(err, "error") : console.log("generated logo")
+            })
+        }else if (answers.logoShape === 'square') {
+            const square = new Square(answers.logoText, answers.textColor, answers.shapeColor) 
+            fs.writeFile('./examples/square.svg', square.render(), err => {
+                err ? console.log(err, "error") : console.log("generated logo")
+            })
+
+        } else if (answers.logoShape === 'circle') {
+            const circle = new Circle(answers.logoText, answers.textColor, answers.shapeColor) 
+            fs.writeFile('./examples/circle.svg', circle.render(), err => {
+                err ? console.log(err, "error") : console.log("generated logo")
+            })
+        }
+      
+        
     })
+
 
 
